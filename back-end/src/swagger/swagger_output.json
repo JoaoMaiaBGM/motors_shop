@@ -1,0 +1,498 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Motors shop",
+    "description": "REST API for vehicles e-commerce"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/announcement": {
+      "post": {
+        "description": "Criação de um anúncio",
+        "requestBody": {
+          "description": "Dados necessários para criar um anúncio",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestAnnouncement"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseAnnouncement"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseAnnouncementNoFields"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "get": {
+        "description": "Listagem dos anúncios cadastrados",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseAnnouncementsList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/announcement/id": {
+      "get": {
+        "description": "Listagem de um anúncio",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseAnnouncementsList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseAnnouncementWrongId"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Atualização de um anúncio",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "Dados enviados para atualização",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestAnnouncementPatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseAnnouncementPatch"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseAnnouncementWrongId"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Deleção de um anúncio",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No body returned for response"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseAnnouncementWrongId"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "RequestAnnouncement": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Tipo de anúncio",
+            "example": "auction"
+          },
+          "vehicleType": {
+            "type": "string",
+            "description": "Tipo de veículo do anúncio",
+            "example": "motorcycle"
+          },
+          "title": {
+            "type": "string",
+            "description": "Título do anúncio",
+            "example": "Harley Davidson"
+          },
+          "year": {
+            "type": "integer",
+            "description": "Ano do veículo do anúncio",
+            "example": 2023
+          },
+          "km": {
+            "type": "integer",
+            "description": "Quilometragem do veículo do anúncio",
+            "example": 12500
+          },
+          "price": {
+            "type": "integer",
+            "description": "Valor do veículo do anúncio",
+            "example": 45000
+          },
+          "Description": {
+            "type": "string",
+            "description": "Descrição do anúncio",
+            "example": "Harley Davidson Softail Fat Bob 107"
+          },
+          "coverImage": {
+            "type": "string",
+            "description": "URL da imagem do anúncio",
+            "example": "https://www.publicdomainpictures.net/pictures/450000/velka/motorfiets-harley-davidson.png"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Chave do anúncio",
+            "example": true
+          }
+        }
+      },
+      "ResponseAnnouncement": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id único do anúncio",
+            "format": "uuid",
+            "example": "d29b9af6-9ab3-45d7-89aa-b26424cbbc77"
+          },
+          "type": {
+            "type": "string",
+            "description": "Tipo de anúncio",
+            "example": "auction"
+          },
+          "vehicleType": {
+            "type": "string",
+            "description": "Tipo de veículo do anúncio",
+            "example": "motorcycle"
+          },
+          "title": {
+            "type": "string",
+            "description": "Título do anúncio",
+            "example": "Harley Davidson"
+          },
+          "year": {
+            "type": "integer",
+            "description": "Ano do veículo do anúncio",
+            "example": 2023
+          },
+          "km": {
+            "type": "integer",
+            "description": "Quilometragem do veículo do anúncio",
+            "example": 12500
+          },
+          "price": {
+            "type": "integer",
+            "description": "Valor do veículo do anúncio",
+            "example": 45000
+          },
+          "Description": {
+            "type": "string",
+            "description": "Descrição do anúncio",
+            "example": "Harley Davidson Softail Fat Bob 107"
+          },
+          "coverImage": {
+            "type": "string",
+            "description": "URL da imagem do anúncio",
+            "example": "https://www.publicdomainpictures.net/pictures/450000/velka/motorfiets-harley-davidson.png"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Chave do anúncio",
+            "example": true
+          },
+          "user_id": {
+            "type": "integer",
+            "description": "Id do usuário que criou o anúncio",
+            "example": 1
+          },
+          "created_at": {
+            "type": "string",
+            "description": "Data e hora da criação do anúncio",
+            "format": "date",
+            "example": "2023-02-23T14:39:53.530Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "Data e hora de atualiação do anúncio",
+            "format": "date",
+            "example": "2023-02-23T14:41:27.530Z"
+          }
+        }
+      },
+      "ResponseAnnouncementsList": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id único do anúncio",
+            "format": "uuid",
+            "example": "d29b9af6-9ab3-45d7-89aa-b26424cbbc77"
+          },
+          "type": {
+            "type": "string",
+            "description": "Tipo de anúncio",
+            "example": "auction"
+          },
+          "vehicleType": {
+            "type": "string",
+            "description": "Tipo de veículo do anúncio",
+            "example": "motorcycle"
+          },
+          "title": {
+            "type": "string",
+            "description": "Título do anúncio",
+            "example": "Harley Davidson"
+          },
+          "year": {
+            "type": "string",
+            "description": "Ano do veículo do anúncio",
+            "example": "2023"
+          },
+          "km": {
+            "type": "string",
+            "description": "Quilometragem do veículo do anúncio",
+            "example": "12500"
+          },
+          "price": {
+            "type": "string",
+            "description": "Valor do veículo do anúncio",
+            "example": "45000"
+          },
+          "Description": {
+            "type": "string",
+            "description": "Descrição do anúncio",
+            "example": "Harley Davidson Softail Fat Bob 107"
+          },
+          "coverImage": {
+            "type": "string",
+            "description": "URL da imagem do anúncio",
+            "example": "https://www.publicdomainpictures.net/pictures/450000/velka/motorfiets-harley-davidson.png"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Chave do anúncio",
+            "example": true
+          },
+          "user_id": {
+            "type": "integer",
+            "description": "Id do usuário que criou o anúncio",
+            "example": 1
+          },
+          "created_at": {
+            "type": "string",
+            "description": "Data e hora da criação do anúncio",
+            "format": "date",
+            "example": "2023-02-23T14:39:53.530Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "Data e hora de atualiação do anúncio",
+            "format": "date",
+            "example": "2023-02-23T14:41:27.530Z"
+          }
+        }
+      },
+      "ResponseAnnouncementNoFields": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "array",
+            "description": "Messagem de retorno para os campos obrigatórios.",
+            "example": [
+              "O tipo de anúncio é obrigatório",
+              "O tipo de veículo é obrigatório",
+              "O título do anúncio é obrigatório",
+              "O ano do veículo é obrigatório",
+              "A quilometragem do veículo é obrigatória",
+              "O preço do veículo é obrigatório",
+              "A imagem de fundo do anúncio é obrigatória",
+              "user_id is a required field"
+            ]
+          }
+        }
+      },
+      "ResponseAnnouncementWrongId": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Messagem de retorno para os anúncio não encontrado.",
+            "example": "Error: Announcement is not found"
+          }
+        }
+      },
+      "RequestAnnouncementPatch": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Título do anúncio",
+            "example": "Gol TSI"
+          },
+          "price": {
+            "type": "integer",
+            "description": "Valor do veículo do anúncio",
+            "example": 32000
+          }
+        }
+      },
+      "ResponseAnnouncementPatch": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id único do anúncio",
+            "format": "uuid",
+            "example": "5f94e2d4-17d0-466b-b3d7-227fc97dddab"
+          },
+          "type": {
+            "type": "string",
+            "description": "Tipo de anúncio",
+            "example": "sale"
+          },
+          "vehicleType": {
+            "type": "string",
+            "description": "Tipo de veículo do anúncio",
+            "example": "car"
+          },
+          "title": {
+            "type": "string",
+            "description": "Título do anúncio",
+            "example": "Gol TSI"
+          },
+          "year": {
+            "type": "string",
+            "description": "Ano do veículo do anúncio",
+            "example": "2019"
+          },
+          "km": {
+            "type": "string",
+            "description": "Quilometragem do veículo do anúncio",
+            "example": "47500"
+          },
+          "price": {
+            "type": "integer",
+            "description": "Valor do veículo do anúncio",
+            "example": 32000
+          },
+          "Description": {
+            "type": "string",
+            "description": "Descrição do anúncio",
+            "example": "1.0 flex, 4p, Manual, cor prata"
+          },
+          "coverImage": {
+            "type": "string",
+            "description": "URL da imagem do anúncio",
+            "example": "https://live.staticflickr.com/8561/27737167573_cfb486e248_b.jpg"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Chave do anúncio",
+            "example": true
+          },
+          "user_id": {
+            "type": "integer",
+            "description": "Id do usuário que criou o anúncio",
+            "example": 1
+          },
+          "created_at": {
+            "type": "string",
+            "description": "Data e hora da criação do anúncio",
+            "format": "date",
+            "example": "2023-02-23T14:39:53.530Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "Data e hora de atualiação do anúncio",
+            "format": "date",
+            "example": "2023-02-23T14:41:27.530Z"
+          }
+        }
+      }
+    }
+  }
+}
